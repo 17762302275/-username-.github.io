@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>运输数据填报</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>运输数据汇总表</h2>
+    <table id="dataTable">
+        <tr>
+            <th>日期</th>
+            <th>项目</th>
+            <th>发班数</th>
+            <th>运输量</th>
+            <th>总包数量（袋）</th>
+            <th>邮件数量（件）</th>
+            <th>路单重量（Kg）</th>
+            <th>状态</th>
+        </tr>
+    </table>
+
+    <h3>数据填报</h3>
+    <form id="submitForm">
+        <input type="date" id="date" required>
+        <input type="text" id="project" placeholder="项目" required>
+        <input type="number" id="shiftCount" placeholder="发班数" required>
+        <input type="number" id="transportVolume" placeholder="运输量" step="0.1" required>
+        <input type="number" id="totalBags" placeholder="总包数量（袋）" required>
+        <input type="number" id="mailCount" placeholder="邮件数量（件）" required>
+        <input type="number" id="weight" placeholder="路单重量（Kg）" step="0.01" required>
+        <button type="submit">提交申请</button>
+    </form>
+
+    <script>
+        // 模拟数据存储（实际可替换为Excel或后端接口）
+        let data = JSON.parse(localStorage.getItem('transportData')) || [];
+
+        // 渲染表格
+        function renderTable() {
+            const table = document.getElementById('dataTable');
+            table.innerHTML = `<tr>
+                <th>日期</th>
+                <th>项目</th>
+                <th>发班数</th>
+                <th>运输量</th>
+                <th>总包数量（袋）</th>
+                <th>邮件数量（件）</th>
+                <th>路单重量（Kg）</th>
+                <th>状态</th>
+            </tr>`;
+            data.forEach((item, index) => {
+                const row = table.insertRow();
+                row.insertCell().textContent = item.date;
+                row.insertCell().textContent = item.project;
+                row.insertCell().textContent = item.shiftCount;
+                row.insertCell().textContent = item.transportVolume;
+                row.insertCell().textContent = item.totalBags;
+                row.insertCell().textContent = item.mailCount;
+                row.insertCell().textContent = item.weight;
+                row.insertCell().textContent = item.status;
+            });
+        }
+
+        // 提交表单
+        document.getElementById('submitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newData = {
+                date: document.getElementById('date').value,
+                project: document.getElementById('project').value,
+                shiftCount: document.getElementById('shiftCount').value,
+                transportVolume: document.getElementById('transportVolume').value,
+                totalBags: document.getElementById('totalBags').value,
+                mailCount: document.getElementById('mailCount').value,
+                weight: document.getElementById('weight').value,
+                status: '待审批'
+            };
+            data.push(newData);
+            localStorage.setItem('transportData', JSON.stringify(data));
+            renderTable();
+            alert('提交成功，请等待审批！');
+        });
+
+        // 初始化
+        renderTable();
+    </script>
+</body>
+</html>
