@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>图片上传+预览</title>
-  <!-- 必须引入企业微信JS SDK -->
+  <!-- 企业微信JS SDK -->
   <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
   <style>
     * {
@@ -17,12 +17,10 @@
       margin: 0 auto;
     }
 
-    /* 隐藏原生文件按钮 */
     #fileInput {
       display: none;
     }
 
-    /* 选择图片按钮 */
     .upload-btn {
       display: block;
       width: 100%;
@@ -35,7 +33,6 @@
       cursor: pointer;
     }
 
-    /* 预览框 */
     #preview {
       width: 100%;
       min-height: 120px;
@@ -55,7 +52,6 @@
       border-radius: 8px;
     }
 
-    /* 关闭按钮（原上传按钮） */
     #closeBtn {
       display: block;
       width: 100%;
@@ -73,46 +69,42 @@
 <body>
   <h3>选择图片 → 预览 → 返回企业微信</h3>
 
-  <!-- 选择图片按钮 -->
   <label for="fileInput" class="upload-btn">📷 点击选择图片</label>
   <input type="file" id="fileInput" accept="image/*">
 
-  <!-- 中间预览框 -->
   <div id="preview">
     <img id="imgPreview">
   </div>
 
-  <!-- 关闭并返回企业微信按钮 -->
   <button id="closeBtn">✅ 完成并返回</button>
 
   <script>
     const fileInput = document.getElementById('fileInput');
-    const preview = document.getElementById('preview');
     const imgPreview = document.getElementById('imgPreview');
     const closeBtn = document.getElementById('closeBtn');
     let selectedFile = null;
 
-    // 选择图片预览逻辑
+    // 图片预览
     fileInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
-
       selectedFile = file;
-      const url = URL.createObjectURL(file);
-
-      imgPreview.src = url;
+      imgPreview.src = URL.createObjectURL(file);
       imgPreview.style.display = 'block';
     });
 
-    // 核心：点击按钮关闭页面，返回企业微信
+    // ==============================================
+    // 🔥 修复 BUG：点一下就关闭企业微信网页
+    // ==============================================
     closeBtn.addEventListener('click', function() {
-      // 企业微信关闭当前窗口的接口
-      if (typeof wx !== 'undefined' && wx.closeWindow) {
-        wx.closeWindow();
-      } else {
-        // 非企业微信环境的兼容提示
-        alert('当前不在企业微信环境，无法直接关闭页面');
-        // 备用方案：尝试关闭浏览器窗口（仅部分浏览器支持）
+      try {
+        if (window.wx && wx.closeWindow) {
+          wx.closeWindow();
+        } else {
+          window.history.back();
+          window.close();
+        }
+      } catch (e) {
         window.close();
       }
     });
