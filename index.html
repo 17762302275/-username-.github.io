@@ -31,17 +31,26 @@
       cursor: pointer;
     }
 
-    /* 预览图区域（自动占位，不会挤按钮） */
+    /* 预览框：两个按钮中间固定占位，自动适应图片大小 */
     #preview {
       width: 100%;
       max-width: 400px;
-      margin: 30px 0; /* 上下留空！关键 */
-      display: none;
+      margin: 30px 0;
+      min-height: 100px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
+
+    /* 图片自适应框大小，不变形 */
     #preview img {
       width: 100%;
+      height: auto;
+      display: block;
       border-radius: 8px;
-      border: 1px solid #ddd;
     }
 
     /* 上传按钮 */
@@ -66,9 +75,9 @@
   <label for="fileInput" class="upload-btn">📷 点击选择图片</label>
   <input type="file" id="fileInput" accept="image/*">
 
-  <!-- 2. 预览区域（在两个按钮中间！） -->
+  <!-- 2. 中间预览框（两个按钮之间，永远在这里） -->
   <div id="preview">
-    <img id="imgPreview">
+    <img id="imgPreview" style="display:none;">
   </div>
 
   <!-- 3. 上传按钮 -->
@@ -81,7 +90,7 @@
     const uploadBtn = document.getElementById('uploadBtn');
     let selectedFile = null;
 
-    // 选择文件 → 预览
+    // 选择图片 → 显示在预览框里
     fileInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -90,7 +99,7 @@
       const url = URL.createObjectURL(file);
 
       imgPreview.src = url;
-      preview.style.display = 'block';
+      imgPreview.style.display = 'block';
     });
 
     // 上传
