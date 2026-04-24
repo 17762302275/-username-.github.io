@@ -1,106 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>图片上传预览</title>
+    <!-- 关键：必须加这个，手机端才会按你的CSS适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件选择优化示例</title>
     <style>
-        /* 基础样式 */
-        .form-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
+        /* 隐藏原生文件控件 */
+        .file-input {
+            display: none;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 25px;
-            margin-right: 10px;
-            background-color: #2196F3;
+
+        /* 自定义按钮样式，手机端也很大很好点 */
+        .custom-file-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: #2ea44f;
             color: white;
-            border: none;
-            border-radius: 4px;
+            font-size: 18px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-        }
-        button:hover {
-            background-color: #0b7dda;
-        }
-        /* 图片预览区域样式 */
-        .image-preview-area {
-            margin-top: 20px;
-            padding: 20px;
-            border: 2px dashed #ddd;
-            border-radius: 4px;
-            min-height: 200px;
             text-align: center;
+            /* 手机端全屏宽度 */
+            width: 100%;
+            box-sizing: border-box;
         }
-        .preview-image {
-            max-width: 100%;
-            max-height: 500px;
-            margin: 10px 0;
-            border: 1px solid #eee;
-            border-radius: 4px;
-        }
-        /* 文件选择框样式 */
-        #imageInput {
-            margin-bottom: 10px;
-            padding: 5px;
+
+        .custom-file-btn:hover {
+            background-color: #2c974b;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>图片上传预览</h2>
-        
-        <div class="form-group">
-            <label>选择并插入图片</label>
-            <input type="file" id="imageInput" accept="image/*">
-            <!-- 图片预览区域 -->
-            <div class="image-preview-area" id="imagePreviewArea">
-                <p>图片预览区域（选择图片后显示）</p>
-            </div>
-        </div>
-
-        <!-- 上传按钮 -->
-        <button type="button" id="uploadBtn">上传图片</button>
-    </div>
+    <!-- 隐藏原生文件控件 -->
+    <input type="file" id="fileInput" class="file-input">
+    <!-- 自定义大按钮 -->
+    <label for="fileInput" class="custom-file-btn">
+        点击选择文件
+    </label>
 
     <script>
-        // 图片预览核心功能
-        const imageInput = document.getElementById('imageInput');
-        const imagePreviewArea = document.getElementById('imagePreviewArea');
-        
-        // 选择图片后实时预览
-        imageInput.addEventListener('change', function(e) {
+        // 可选：文件选择后的回调逻辑
+        document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    imagePreviewArea.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = event.target.result;
-                    img.className = 'preview-image';
-                    img.alt = '预览图片';
-                    imagePreviewArea.appendChild(img);
-                };
-                
-                reader.readAsDataURL(file);
-            } else {
-                alert('请选择有效的图片文件！');
+            if (file) {
+                alert('你选择了文件：' + file.name);
+                // 这里写你原本要处理文件的代码
             }
-        });
-
-        // 上传按钮（空功能，预留）
-        document.getElementById('uploadBtn').addEventListener('click', function() {
-            alert('上传功能待开发！');
         });
     </script>
 </body>
