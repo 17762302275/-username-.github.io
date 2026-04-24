@@ -11,32 +11,33 @@
     body {
       padding: 20px;
       font-size: 16px;
+      max-width: 400px; /* 限制整体宽度 */
+      margin: 0 auto;   /* 页面居中 */
     }
 
-    /* 隐藏原生小按钮 */
+    /* 隐藏原生文件按钮 */
     #fileInput {
       display: none;
     }
 
-    /* 自定义超大按钮 */
+    /* 选择图片按钮（电脑不大，手机全屏） */
     .upload-btn {
       display: block;
       width: 100%;
-      padding: 20px;
+      padding: 18px;
       background: #4285F4;
       color: white;
-      font-size: 18px;
+      font-size: 17px;
       text-align: center;
       border-radius: 12px;
       cursor: pointer;
     }
 
-    /* 预览框：两个按钮中间固定占位，自动适应图片大小 */
+    /* 预览框：固定在两个按钮中间，自动适应图片 */
     #preview {
       width: 100%;
-      max-width: 400px;
-      margin: 30px 0;
-      min-height: 100px;
+      min-height: 120px;
+      margin: 25px 0;
       border: 2px dashed #ccc;
       border-radius: 8px;
       display: flex;
@@ -45,11 +46,11 @@
       overflow: hidden;
     }
 
-    /* 图片自适应框大小，不变形 */
+    /* 图片自适应 */
     #preview img {
       width: 100%;
       height: auto;
-      display: block;
+      display: none;
       border-radius: 8px;
     }
 
@@ -57,10 +58,10 @@
     #uploadBtn {
       display: block;
       width: 100%;
-      padding: 20px;
+      padding: 18px;
       background: #28a745;
       color: white;
-      font-size: 18px;
+      font-size: 17px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
@@ -71,16 +72,16 @@
 <body>
   <h3>选择图片 → 预览 → 上传</h3>
 
-  <!-- 1. 选择图片按钮 -->
+  <!-- 选择图片按钮 -->
   <label for="fileInput" class="upload-btn">📷 点击选择图片</label>
   <input type="file" id="fileInput" accept="image/*">
 
-  <!-- 2. 中间预览框（两个按钮之间，永远在这里） -->
+  <!-- 中间预览框（永久占位） -->
   <div id="preview">
-    <img id="imgPreview" style="display:none;">
+    <img id="imgPreview">
   </div>
 
-  <!-- 3. 上传按钮 -->
+  <!-- 上传按钮 -->
   <button id="uploadBtn">✅ 确认上传</button>
 
   <script>
@@ -90,7 +91,7 @@
     const uploadBtn = document.getElementById('uploadBtn');
     let selectedFile = null;
 
-    // 选择图片 → 显示在预览框里
+    // 选择图片 → 预览
     fileInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
