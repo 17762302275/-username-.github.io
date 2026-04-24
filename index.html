@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <!-- 手机必加：让页面适配手机 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>图片上传+预览</title>
   <style>
@@ -19,7 +18,7 @@
       display: none;
     }
 
-    /* 自定义超大按钮（手机神器） */
+    /* 自定义超大按钮 */
     .upload-btn {
       display: block;
       width: 100%;
@@ -29,15 +28,14 @@
       font-size: 18px;
       text-align: center;
       border-radius: 12px;
-      margin: 20px 0;
       cursor: pointer;
     }
 
-    /* 预览图区域 */
+    /* 预览图区域（自动占位，不会挤按钮） */
     #preview {
       width: 100%;
       max-width: 400px;
-      margin-top: 20px;
+      margin: 30px 0; /* 上下留空！关键 */
       display: none;
     }
     #preview img {
@@ -56,7 +54,6 @@
       font-size: 18px;
       border: none;
       border-radius: 12px;
-      margin-top: 15px;
       cursor: pointer;
     }
   </style>
@@ -65,11 +62,11 @@
 <body>
   <h3>选择图片 → 预览 → 上传</h3>
 
-  <!-- 1. 超大选择文件按钮（手机超好点） -->
+  <!-- 1. 选择图片按钮 -->
   <label for="fileInput" class="upload-btn">📷 点击选择图片</label>
   <input type="file" id="fileInput" accept="image/*">
 
-  <!-- 2. 预览区域 -->
+  <!-- 2. 预览区域（在两个按钮中间！） -->
   <div id="preview">
     <img id="imgPreview">
   </div>
@@ -84,7 +81,7 @@
     const uploadBtn = document.getElementById('uploadBtn');
     let selectedFile = null;
 
-    // 选择文件 → 立刻预览
+    // 选择文件 → 预览
     fileInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -92,12 +89,11 @@
       selectedFile = file;
       const url = URL.createObjectURL(file);
 
-      // 显示预览
       imgPreview.src = url;
       preview.style.display = 'block';
     });
 
-    // 上传按钮逻辑
+    // 上传
     uploadBtn.addEventListener('click', function() {
       if (!selectedFile) {
         alert('请先选择图片！');
